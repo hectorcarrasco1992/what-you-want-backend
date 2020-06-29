@@ -1,4 +1,5 @@
 const axios = require("axios")
+const User = require("../../user/model/User")
 
 module.exports ={
     getActivities:async (req,res)=>{

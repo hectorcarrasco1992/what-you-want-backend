@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require("cors")
 const mongoose = require('mongoose')
+const chalk = require('chalk')
 
 const activityRouter = require('./routes/Activity/activity')
 const indexRouter = require('./routes/index');
@@ -18,7 +19,7 @@ mongoose.connect(process.env.MONGO_DB, {
   useFindAndModify: false,
   useUnifiedTopology: true,
 }).then(()=>{
-  console.log("Mongo Db Connected");
+  console.log(chalk.blue("MongoDB Connected"));
   
 }).catch((e)=>{
   console.log(e);

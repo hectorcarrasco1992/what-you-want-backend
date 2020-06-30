@@ -8,13 +8,13 @@ module.exports = {
     signUp: async (req, res) => {
         try {
             let createdUser = new User({
-                // name: req.body.name,
+                name: req.body.name,
                 username: req.body.username,
                 email: req.body.email,
                 password: req.body.password,
-                // city: req.body.city,
-                // state: req.body.state,
-                // zipCode: req.body.zipCode,
+                city: req.body.city,
+                state: req.body.state,
+                zipCode: req.body.zipCode,
             });
             let genSalt = await bcrypt.genSalt(12);
             let hashedPassword = await bcrypt.hash(

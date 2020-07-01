@@ -5,7 +5,7 @@ let config = { headers: {'user-key': process.env.ZOMATO_KEY} }
 
 
 module.exports ={
-    getActivities:async (req,res)=>{
+    getActivitiesAPI:async (req,res)=>{
         let openCageKey = process.env.OPEN_CAGE_KEY 
         let place = "Brooklyn, Ny 11211"
         let url = `https://api.opencagedata.com/geocode/v1/json?q=${place}&key=${openCageKey}`
@@ -21,19 +21,11 @@ module.exports ={
             let activity = await axios.get(zomatoUrl,config
             )
             let info =activity.data.restaurants.map((a)=>{
-                let {name,price_range,location,thumb}= a.restaurant
-                return {name,price_range,location,thumb}
+                let {name,price_range,location,thumb,cuisines}= a.restaurant
+                return {name,price_range,location,thumb,cuisines}
             });
             
-            info.map((a)=>{
-                let stuffToDo = new Activity({
-                    name:a.name,
-                    cost:a.price_range,
-                    location:a.location,
-                    thumb:a.thumb
-                })
-                stuffToDo.save()
-            })
+            
             console.log(info);
             
             
@@ -42,5 +34,19 @@ module.exports ={
             console.log(error);
             
         }
+    },
+
+    getAllActivities:async (req,res)=>{
+        try {
+            let success = await Activity.find({})
+            console.log(success);
+
+            res.send(success)
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
     }
+
 }

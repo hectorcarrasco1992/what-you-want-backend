@@ -8,6 +8,7 @@ const ActivitySchema = mongoose.Schema({
     },
     cost: { type: String, trim: true },
     thumb: { type: String, trim: true },
+    apiID:{type:Number,trim:true}
 });
 
 module.exports = mongoose.model("Activity",ActivitySchema)

@@ -17,19 +17,64 @@ module.exports = {
             `;
 
             let activity = await axios.get(zomatoUrl, config);
-            let info = activity.data.restaurants.map((a) => {
-                let {
-                    name,
-                    price_range,
-                    location,
-                    thumb,
-                    cuisines,
-                } = a.restaurant;
-                return { name, price_range, location, thumb, cuisines };
-            });
+            console.log(activity.data.restaurants[0].restaurant.id);
 
+            let info =[]
+            info = activity.data.restaurants.map((a) => {
+                let isDataBase = false
+                if(Activity.findOne({apiID:a.id}===true )){
+                    isDataBase = true
+                    console.log("isDAtaBAse");
+                }
+                
+                console.log("........",Activity.findOne({apiID:a.id}))
+                let newInfo = {
+                    name:a.restaurant.name,
+                    price_range:a.restaurant.price_range,
+                    location:a.restaurant.location,
+                    thumb:a.restaurant.thumb,
+                    cuisines:a.restaurant.cuisines,
+                    id:a.restaurant.id,
+                    isDataBase:isDataBase
+
+                }
+                    // let {
+                    //     name,
+                    //     price_range,
+                    //     location,
+                    //     thumb,
+                    //     cuisines,
+                    //     id
+                    // } = a.restaurant;
+                    
+                    return newInfo;
+                
+            }) 
 
             console.log(info);
+            
+            info.map((a)=>{
+                if(a.isDataBase) {
+                    return
+                }
+                    let stuffToDo = new Activity({
+                        name:a.name,
+                        cuisines:a.cuisines,
+                        cost:a.price_range,
+                        location:a.location,
+                        thumb:a.thumb,
+                        apiID:a.id
+                    })
+                    console.log("stuffToDo");
+                    
+                    stuffToDo.save()
+                })
+    
+            ;
+        
+
+
+            //console.log(info);
 
             res.send(info);
         } catch (error) {
@@ -40,7 +85,7 @@ module.exports = {
     getAllActivities: async (req, res) => {
         try {
             let success = await Activity.find({});
-            console.log(success);
+            //console.log(success);
 
             res.send(success);
         } catch (error) {
@@ -50,9 +95,15 @@ module.exports = {
 
     likeActivity:async(req,res)=>{
         try {
-            let success = Activity.findOne({_id:req.body._id})
-            let user = User.findOne({username:req.body.username})
-            user.likes.push(success)
+            // let success = Activity.findOne({_id:req.body._id})
+            // console.log(".......",success);
+            //console.log(req.body);
+            console.log(req.body.username);
+            
+            console.log("test");
+            
+            // let user = User.findOne({username:req.body.username})
+            // user.likes.push(success)
         } catch (error) {
             console.log(error);
             

@@ -47,4 +47,15 @@ module.exports = {
             console.log(error);
         }
     },
+
+    likeActivity:async(req,res)=>{
+        try {
+            let success = Activity.findOne({_id:req.body._id})
+            let user = User.findOne({username:req.body.username})
+            user.likes.push(success)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 };

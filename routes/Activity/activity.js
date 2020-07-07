@@ -4,5 +4,6 @@ const activityController = require('./controllers/activityController');
 
 router.get('/activity', activityController.getActivitiesAPI);
 router.post('/get-activities', activityController.getAllActivities);
+router.post("/like-activity",activityController.likeActivity)
 
 module.exports = router;

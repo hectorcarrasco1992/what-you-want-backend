@@ -65,19 +65,12 @@ module.exports = {
 
     findFriend:async (req,res)=>{
         try {
-            let foundFriend = User.findOne({username:req.body.username})
+            let foundFriend = await User.findOne({username:req.body.username})
             console.log(foundFriend);
-            let matches = []
-            for(let i =0;i<=foundFriend.likes.length;i++){
-                if(foundFriend.likes[i] === req.user.likes[i]){
-                    matches.push(foundFriend.likes[i])
-                }
-                return matches
-            }
-
-
             
-        } catch (error) {
+            res.send(foundFriend)
+            }
+            catch (error) {
             console.log(error);
             
         }

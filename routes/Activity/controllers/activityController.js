@@ -12,71 +12,54 @@ module.exports = {
             let success = await axios.get(url);
             let lat = success.data.results['0'].geometry.lat;
             let long = success.data.results['0'].geometry.lng;
-            //console.log(success.data.results["0"].geometry.lat);
-            let zomatoUrl = `https://developers.zomato.com/api/v2.1/search?count=20&lat=${lat}&lon=${long}
+            
+            let zomatoUrl = `https://developers.zomato.com/api/v2.1/search?count=10&lat=${lat}&lon=${long}
             `;
 
             let activity = await axios.get(zomatoUrl, config);
             console.log(activity.data.restaurants[0].restaurant.id);
 
-            let info =[]
-            info = activity.data.restaurants.map((a) => {
-                let isDataBase = false
-                if(Activity.findOne({apiID:a.id}===true )){
-                    isDataBase = true
-                    console.log("isDAtaBAse");
-                }
-                
-                console.log("........",Activity.findOne({apiID:a.id}))
-                let newInfo = {
-                    name:a.restaurant.name,
-                    price_range:a.restaurant.price_range,
-                    location:a.restaurant.location,
-                    thumb:a.restaurant.thumb,
-                    cuisines:a.restaurant.cuisines,
-                    id:a.restaurant.id,
-                    isDataBase:isDataBase
-
-                }
-                    // let {
-                    //     name,
-                    //     price_range,
-                    //     location,
-                    //     thumb,
-                    //     cuisines,
-                    //     id
-                    // } = a.restaurant;
-                    
-                    return newInfo;
-                
-            }) 
-
-            console.log(info);
             
-            info.map((a)=>{
-                if(a.isDataBase) {
-                    return
-                }
+            let info = activity.data.restaurants.map(async(a) => {
+                let isDataBase = false
+                //console.log("^^^^^",a.restaurant.id);
+                
+                //console.log("*****",found.length);
+                
+                let found =   await Activity.find({apiID:a.restaurant.id})
+                console.log("$$$$$$$",found);
+                
+                if (found.length == 0 ){
                     let stuffToDo = new Activity({
-                        name:a.name,
-                        cuisines:a.cuisines,
-                        cost:a.price_range,
-                        location:a.location,
-                        thumb:a.thumb,
-                        apiID:a.id
+                        name:a.restaurant.name,
+                        cuisines:a.restaurant.cuisines,
+                        cost:a.restaurant.price_range,
+                        location:a.restaurant.location,
+                        thumb:a.restaurant.thumb,
+                        apiID:a.restaurant.id
                     })
-                    console.log("stuffToDo");
+                    console.log("######",stuffToDo);
                     
                     stuffToDo.save()
-                })
-    
-            ;
-        
-
-
-            //console.log(info);
-
-            res.send(info);
+                }
+                //console.log(a);
+                
+                let newInfo =  {
+                    name: a.restaurant.name,
+                    price_range: a.restaurant.price_range,
+                    location: a.restaurant.location,
+                    thumb: a.restaurant.thumb,
+                    cuisines: a.restaurant.cuisines,
+                    id: a.restaurant.id,
+                    isDataBase:isDataBase
+                }
+                return newInfo
+                
+            }) 
+            
+            console.log("///////",info);
+            
+            Promise.all(info).then((completed)=>res.send(completed));
         } catch (error) {
             console.log(error);
         }

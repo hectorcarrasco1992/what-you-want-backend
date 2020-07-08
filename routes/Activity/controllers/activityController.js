@@ -17,7 +17,7 @@ module.exports = {
             `;
 
             let activity = await axios.get(zomatoUrl, config);
-            console.log(activity.data.restaurants[0].restaurant.id);
+            //console.log(activity.data.restaurants[0].restaurant.id);
 
             
             let info = activity.data.restaurants.map(async(a) => {
@@ -27,7 +27,7 @@ module.exports = {
                 //console.log("*****",found.length);
                 
                 let found =   await Activity.find({apiID:a.restaurant.id})
-                console.log("$$$$$$$",found);
+                //console.log("$$$$$$$",found);
                 
                 if (found.length == 0 ){
                     let stuffToDo = new Activity({
@@ -38,7 +38,7 @@ module.exports = {
                         thumb:a.restaurant.thumb,
                         apiID:a.restaurant.id
                     })
-                    console.log("######",stuffToDo);
+                    //console.log("######",stuffToDo);
                     
                     stuffToDo.save()
                 }
@@ -57,7 +57,7 @@ module.exports = {
                 
             }) 
             
-            console.log("///////",info);
+            //console.log("///////",info);
             
             Promise.all(info).then((completed)=>res.send(completed));
         } catch (error) {
@@ -78,10 +78,12 @@ module.exports = {
 
     likeActivity:async(req,res)=>{
         try {
-            // let success = Activity.findOne({_id:req.body._id})
+            //let success = Activity.findOne({id:req.body.id})
+            //console.log("@@@@@",req.body);
+            
             // console.log(".......",success);
             //console.log(req.body);
-            console.log(req.body.username);
+            //console.log(req.body.username);
             
             console.log("test");
             

@@ -65,7 +65,9 @@ module.exports = {
 
     findFriend:async (req,res)=>{
         try {
-            let foundFriend = await User.findOne({username:req.body.username})
+            
+            
+            let foundFriend = await (await User.findOne({username:req.body.username}))
             console.log(foundFriend);
             
             res.send(foundFriend)

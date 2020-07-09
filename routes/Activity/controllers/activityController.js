@@ -87,9 +87,11 @@ module.exports = {
             
             console.log("test");
             
-            let user = await User.findOne({username:req.body.username})
+            let user = await User.findOne({username:req.body.user.username})
             
             user.likes.push(activity)
+            user.save()
+            res.send(activity)
             console.log(user);
         } catch (error) {
             console.log(error);
@@ -103,11 +105,13 @@ module.exports = {
             console.log(req.body);
             //console.log(req.body.username);
             
-            console.log("test");
+            //console.log("test");
             
-            let user = await User.findOne({username:req.body.username})
+            let user = await User.findOne({username:req.body.user.username})
             
             user.dislikes.push(activity)
+            user.save()
+            res.send(activity)
             console.log(user);
         } catch (error) {
             console.log(error);

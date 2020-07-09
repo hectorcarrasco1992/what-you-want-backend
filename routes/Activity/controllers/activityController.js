@@ -27,7 +27,9 @@ module.exports = {
                 //console.log("*****",found.length);
                 
                 let found =   await Activity.find({apiID:a.restaurant.id})
-                //console.log("$$$$$$$",found);
+
+                // console.log("$$$$$$$",found);
+
                 
                 if (found.length == 0 ){
                     let stuffToDo = new Activity({

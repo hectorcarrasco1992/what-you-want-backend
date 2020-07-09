@@ -4,7 +4,6 @@ const dbErrorHelper = require('../../lib/dbErrorHelper/dbErrorHelper');
 const jwtHelper = require('../authHelpers/jwtHelper');
 
 module.exports = {
-    
     signUp: async (req, res) => {
         try {
             let createdUser = new User({
@@ -63,18 +62,19 @@ module.exports = {
         }
     },
 
-    findFriend:async (req,res)=>{
+    findFriend: async (req, res) => {
         try {
-            
-            
-            let foundFriend = await (await User.findOne({username:req.body.username}))
-            console.log(foundFriend);
-            
-            res.send(foundFriend)
-            }
-            catch (error) {
+
+            console.log('req.body', req.body)
+            let foundFriend = await User.findOne({
+                username: req.body.username,
+            });
+            console.log('found friend:', foundFriend);
+
+            res.send(foundFriend);
+        } catch (error) {
+
             console.log(error);
-            
         }
-    }
+    },
 };

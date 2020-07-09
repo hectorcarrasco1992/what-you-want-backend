@@ -64,6 +64,7 @@ module.exports = {
 
     findFriend: async (req, res) => {
         try {
+
             console.log('req.body', req.body)
             let foundFriend = await User.findOne({
                 username: req.body.username,
@@ -72,6 +73,7 @@ module.exports = {
 
             res.send(foundFriend);
         } catch (error) {
+
             console.log(error);
         }
     },

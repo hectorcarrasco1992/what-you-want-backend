@@ -91,7 +91,7 @@ module.exports = {
             
             user.likes.push(activity)
             user.save()
-            res.send(activity)
+            res.send({activity,user})
             console.log(user);
         } catch (error) {
             console.log(error);

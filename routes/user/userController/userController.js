@@ -64,14 +64,14 @@ module.exports = {
 
     findFriend: async (req, res) => {
         try {
-
+            let user = await User.findOne({username:req.body.value.user.username})
             console.log('req.body', req.body)
             let foundFriend = await User.findOne({
-                username: req.body.username,
+                username: req.body.value.username,
             });
             console.log('found friend:', foundFriend);
 
-            res.send(foundFriend);
+            res.send({foundFriend,user});
         } catch (error) {
 
             console.log(error);

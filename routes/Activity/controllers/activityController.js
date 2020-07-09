@@ -26,34 +26,34 @@ module.exports = {
                 
                 //console.log("*****",found.length);
                 
-                let found =   await Activity.find({apiID:a.restaurant.id})
+            let found =   await Activity.find({apiID:a.restaurant.id})
 
                 // console.log("$$$$$$$",found);
 
                 
-                if (found.length == 0 ){
-                    let stuffToDo = new Activity({
-                        name:a.restaurant.name,
-                        cuisines:a.restaurant.cuisines,
-                        cost:a.restaurant.price_range,
-                        location:a.restaurant.location,
-                        thumb:a.restaurant.thumb,
-                        apiID:a.restaurant.id
-                    })
+            if (found.length == 0 ){
+                let stuffToDo = new Activity({
+                    name:a.restaurant.name,
+                    cuisines:a.restaurant.cuisines,
+                    cost:a.restaurant.price_range,
+                    location:a.restaurant.location,
+                    thumb:a.restaurant.thumb,
+                    apiID:a.restaurant.id
+                })
                     //console.log("######",stuffToDo);
                     
                     stuffToDo.save()
                 }
                 //console.log(a);
                 
-                let newInfo =  {
-                    name: a.restaurant.name,
-                    price_range: a.restaurant.price_range,
-                    location: a.restaurant.location,
-                    thumb: a.restaurant.thumb,
-                    cuisines: a.restaurant.cuisines,
-                    id: a.restaurant.id,
-                    isDataBase:isDataBase
+            let newInfo =  {
+                name: a.restaurant.name,
+                price_range: a.restaurant.price_range,
+                location: a.restaurant.location,
+                thumb: a.restaurant.thumb,
+                cuisines: a.restaurant.cuisines,
+                id: a.restaurant.id,
+                isDataBase:isDataBase
                 }
                 return newInfo
                 
@@ -78,19 +78,37 @@ module.exports = {
         }
     },
 
-    likeActivity:async(req,res)=>{
+    likeActivity:async (req,res)=>{
         try {
-            //let success = Activity.findOne({id:req.body.id})
-            //console.log("@@@@@",req.body);
+            let activity = await Activity.findOne({apiID:req.body.id})
             
-            // console.log(".......",success);
-            //console.log(req.body);
+            console.log(req.body);
             //console.log(req.body.username);
             
             console.log("test");
             
-            // let user = User.findOne({username:req.body.username})
-            // user.likes.push(success)
+            let user = await User.findOne({username:req.body.username})
+            
+            user.likes.push(activity)
+            console.log(user);
+        } catch (error) {
+            console.log(error);
+            
+        }
+    },
+    dislikeActivity:async (req,res)=>{
+        try {
+            let activity = await Activity.findOne({apiID:req.body.id})
+            
+            console.log(req.body);
+            //console.log(req.body.username);
+            
+            console.log("test");
+            
+            let user = await User.findOne({username:req.body.username})
+            
+            user.dislikes.push(activity)
+            console.log(user);
         } catch (error) {
             console.log(error);
             
